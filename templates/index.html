@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Digital Footprint Dashboard</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <h2>Digital Footprint Dashboard</h2>
+
+    <button onclick="toggleTheme()" class="theme-btn">
+        Toggle Theme
+    </button>
+
+</nav>
+
+<div class="container">
+
+    <h1>Digital Footprint Dashboard</h1>
+
+    <form method="POST">
+
+        <input
+        type="text"
+        name="github"
+        placeholder="GitHub Username">
+
+        <input
+        type="text"
+        name="reddit"
+        placeholder="Reddit Username">
+
+        <button type="submit" onclick="showLoading()">
+            Analyze Profile
+        </button>
+
+        <div id="loading">
+
+            Fetching Digital Footprint...
+
+        </div>
+
+        {% if form_error %}
+
+        <div class="error">
+            {{ form_error }}
+        </div>
+
+        {% endif %}
+
+        {% if github_error %}
+
+        <div class="error">
+            {{ github_error }}
+        </div>
+
+        {% endif %}
+
+        {% if reddit_error %}
+
+        <div class="error">
+            {{ reddit_error }}
+        </div>
+
+        {% endif %}
+
+    </form>
+
+    {% if github %}
+
+    <div class="history">
+
+        Last Search:
+        {{ github.profile.login }}
+
+    </div>
+
+    {% endif %}
+
+    {% if github %}
+
+    <div class="card glow">
+
+        <h2>GitHub Analysis</h2>
+
+        <img src="{{ github.profile.avatar_url }}">
+
+        <p><b>Name:</b> {{ github.profile.name }}</p>
+
+        <p><b>Username:</b> {{ github.profile.login }}</p>
+
+        <p><b>Followers:</b> {{ github.profile.followers }}</p>
+
+        <p><b>Repositories:</b> {{ github.profile.public_repos }}</p>
+
+        <p><b>Total Stars:</b> {{ github.total_stars }}</p>
+
+        <p><b>Developer Level:</b> {{ github.developer_level }}</p>
+
+        <p><b>Bio:</b> {{ github.profile.bio }}</p>
+
+        <p><b>Location:</b> {{ github.profile.location }}</p>
+
+        <h3>Languages Used</h3>
+
+        <ul>
+
+        {% for lang in github.languages %}
+
+            <li>{{ lang }}</li>
+
+        {% endfor %}
+
+        </ul>
+
+        {% if github.top_repo %}
+
+        <div class="top-repo">
+
+            <h3>Top Repository</h3>
+
+            <p><b>{{ github.top_repo.name }}</b></p>
+
+            <p>⭐ {{ github.top_repo.stargazers_count }}</p>
+
+            <p>{{ github.top_repo.description }}</p>
+
+        </div>
+
+        {% endif %}
+
+        <h3>Recent Repositories</h3>
+
+        {% for repo in github.repos %}
+
+        <div class="repo">
+
+            <p><b>{{ repo.name }}</b></p>
+
+            <p>Language: {{ repo.language }}</p>
+
+            <p>Stars: {{ repo.stargazers_count }}</p>
+
+            <p>Forks: {{ repo.forks_count }}</p>
+
+            <p>Updated: {{ repo.updated_at }}</p>
+
+            <a href="{{ repo.html_url }}"
+            target="_blank">
+
+            Open Repository
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+        <canvas id="repoChart"></canvas>
+
+    </div>
+
+    {% endif %}
+
+    {% if reddit %}
+
+    <div class="card glow">
+
+        <h2>Reddit Analysis</h2>
+
+        <img src="{{ reddit.icon }}">
+
+        <p><b>Username:</b> {{ reddit.name }}</p>
+
+        <p><b>Total Karma:</b> {{ reddit.karma }}</p>
+
+    </div>
+
+    {% endif %}
+
+    {% if score > 0 %}
+
+    <div class="score-card pulse">
+
+        <h2>Digital Activity Score</h2>
+
+        <h1 id="counter">{{ score }}</h1>
+
+    </div>
+
+    <button onclick="window.print()" class="pdf-btn">
+        Download Report PDF
+    </button>
+
+    {% endif %}
+
+</div>
+
+<footer>
+
+    <p>
+        👍👍Digital Footprint Intelligence Dashboard👍👍
+    </p>
+
+    <p>
+       👍👍 Developed using Flask, APIs, HTML, CSS & JavaScript👍👍
+    </p>
+
+    <p>
+        
+    </p>
+
+</footer>
+
+<script>
+
+function showLoading(){
+
+    document.getElementById("loading").style.display = "block";
+
+}
+
+function toggleTheme(){
+
+    document.body.classList.toggle("light-mode");
+
+}
+
+const counter = document.getElementById("counter");
+
+if(counter){
+
+    let start = 0;
+
+    let end = parseInt(counter.innerText);
+
+    let speed = 20;
+
+    let interval = setInterval(() => {
+
+        start++;
+
+        counter.innerText = start;
+
+        if(start >= end){
+
+            clearInterval(interval);
+
+        }
+
+    }, speed);
+}
+
+{% if github %}
+
+const ctx = document.getElementById('repoChart');
+
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [
+        {% for repo in github.repos %}
+            '{{ repo.name }}',
+        {% endfor %}
+        ],
+        datasets: [{
+            label: 'Repository Stars',
+            data: [
+            {% for repo in github.repos %}
+                {{ repo.stargazers_count }},
+            {% endfor %}
+            ]
+        }]
+    }
+});
+
+{% endif %}
+
+</script>
+
+</body>
+</html>

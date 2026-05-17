@@ -1,0 +1,111 @@
+body{
+    margin:0;
+    padding:0;
+    background:#061414;
+    color:white;
+    font-family:Arial;
+}
+
+.container{
+    width:800px;
+    margin:30px auto;
+}
+
+h1{
+    text-align:center;
+    color:#00ffcc;
+    text-shadow:0 0 15px #00ffcc;
+}
+
+form{
+    background:#102929;
+    padding:20px;
+    border-radius:12px;
+    border:1px solid #00ffcc;
+}
+
+input{
+    width:96%;
+    padding:12px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:8px;
+    background:#0b2020;
+    color:white;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#00ffcc;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.card{
+    margin-top:20px;
+    background:#102929;
+    padding:20px;
+    border-radius:12px;
+}
+
+.glow{
+    box-shadow:0 0 20px rgba(0,255,204,0.3);
+}
+
+img{
+    width:110px;
+    border-radius:50%;
+    border:3px solid #00ffcc;
+}
+
+.repo{
+    background:#0b2020;
+    padding:15px;
+    margin-top:15px;
+    border-radius:10px;
+    border-left:4px solid #00ffcc;
+}
+
+.top-repo{
+    background:#00ffcc;
+    color:black;
+    padding:15px;
+    border-radius:10px;
+    margin-top:20px;
+}
+
+.score-card{
+    margin-top:20px;
+    background:#00ffcc;
+    color:#061414;
+    text-align:center;
+    padding:20px;
+    border-radius:12px;
+    font-weight:bold;
+    box-shadow:0 0 20px rgba(0,255,204,0.4);
+}
+
+.score-card h1{
+    color:#061414;
+    font-size:50px;
+    margin-top:10px;
+}
+
+.score-card h2{
+    color:#061414;
+}
+
+.error{
+    background:red;
+    padding:12px;
+    margin-top:10px;
+    border-radius:8px;
+}
+
+a{
+    color:#00ffcc;
+}
